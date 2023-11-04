@@ -1,0 +1,34 @@
+cols = ['minimum_nights', 'calculated_host_listings_count', 'availability_365']
+
+minimum_nights = stayed at the listing
+calculated_host_listings_count = numbers of listings acquired by a single host
+availability_365 = listing available for number of days in a year
+
+
+k1 = [i.split(' in ') for i in val1['listings']]
+val1['house_type'] = [i[0] for i in k1]
+val1['city'] = [i[1] for i in k1]
+val1['ratings'] = [i[2:] for i in val1['ratings']]
+def stripper(i):
+    i = i.replace(' ', '')
+    if i[0].isnumeric():
+        i = float(i[0])
+    return i
+
+val1['bedrooms'] = val1['bedrooms'].astype(str).map(stripper)
+val1['beds'] = val1['beds'].astype(str).map(stripper)
+
+import re
+
+def bath_splitter(i):
+    numeric = []
+    pattern = r'(\d+\.\d+|\d+)'
+    if 'shared' in i:
+        k = 0.5
+        return k
+    matches = re.findall(pattern, i)
+    for match in matches:
+        numeric.append(match)
+    return numeric
+
+val1['baths'] = val1['baths'].astype(str).map(bath_splitter).
